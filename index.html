@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Подключаем Pyodide -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.28.2/full/pyodide.js"></script>
     <style>
         * {
             margin: 0;
@@ -21,7 +23,7 @@
             padding: 2rem;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
         }
         h1 {
             font-size: 2rem;
@@ -112,18 +114,15 @@
             max-height: 500px;
             transition: max-height 0.5s ease-in;
         }
-                /* Контейнер для видео — делает видео адаптивным */
         .video-wrapper {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 пропорция (16/9 = 1.777) */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border-radius: 0.75rem;
             background: #000;
         }
-        
-        /* Сам iframe или video */
         .video-wrapper iframe,
         .video-wrapper video {
             position: absolute;
@@ -133,8 +132,6 @@
             height: 100% !important;
             border: none;
         }
-        
-        /* Для видео из ВК с фиксированными размерами — переопределяем */
         .video-wrapper iframe {
             position: absolute;
             top: 0;
@@ -142,8 +139,6 @@
             width: 100% !important;
             height: 100% !important;
         }
-        
-        /* Дополнительно для телефонов */
         @media (max-width: 768px) {
             .video-wrapper {
                 border-radius: 0.5rem;
@@ -165,11 +160,90 @@
             font-family: monospace;
             font-size: 0.85rem;
         }
+        /* Стили для редактора кода */
+        .code-editor {
+            margin-top: 1rem;
+            background: #1e1a2f;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .code-editor textarea {
+            width: 100%;
+            min-height: 200px;
+            background: #1e1a2f;
+            color: #f0ebff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            padding: 1rem;
+            border: none;
+            resize: vertical;
+            outline: none;
+        }
+        .code-header {
+            background: #2a1e3a;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .code-header span {
+            color: #e879f9;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        .run-code-btn {
+            background: #8b5cf6;
+            border: none;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .run-code-btn:hover {
+            background: #6b4e9e;
+        }
+        .test-data {
+            background: #2a1e3a;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .test-data-title {
+            font-size: 0.8rem;
+            color: #e879f9;
+            margin-bottom: 0.5rem;
+        }
+        .test-data textarea {
+            width: 100%;
+            background: #0b0715;
+            color: #f0ebff;
+            font-family: monospace;
+            font-size: 0.8rem;
+            padding: 0.5rem;
+            border: 1px solid #8b5cf6;
+            border-radius: 0.3rem;
+            resize: vertical;
+        }
+        .output-area {
+            background: #0b0715;
+            color: #10b981;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            white-space: pre-wrap;
+        }
         .back-link {
             display: inline-block;
             color: #8b5cf6;
             text-decoration: none;
             margin-bottom: 1.5rem;
+            margin-right: 1rem;
             font-size: 0.9rem;
         }
         .back-link:hover {
@@ -196,13 +270,19 @@
     <a href="https://Vasilekyanina-source.github.io/" class="back-link">← На главную</a>
     <a href="https://Vasilekyanina-source.github.io/Informatics1/index.html" class="back-link">← К урокам</a>
     <h1>📝 Задания 16 для самостоятельной работы</h1>
-    <div class="subtitle">Здесь представлены различные 16 задания для тренировки. Если вы хотите проверить свое решение или затрудняетесь в решении, то можно воспользоваться видеоразбором, которое можно открыть по кнопке после каждого задания. Также у вас есть возможность написать код программы на самой странице и проверить его работу на нескольких раборах данных</div>
+    <div class="subtitle">Здесь представлены различные 16 задания для тренировки. Вы можете написать код программы на Python, проверить его работу на нескольких наборах данных и посмотреть видеоразбор при необходимости.</div>
 
     <!-- ЗАДАНИЕ 1 -->
     <div class="task">
         <div class="task-number">Задание 1</div>
         <div class="task-text">
-            В одном из произведений <b>А.С. Пушкина</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, есть персонаж по фамилии Берестов. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните, как называется имение, в котором живёт этот человек.
+Напишите программу, которая в последовательности натуральных десятичных чисел определяет количество элементов, запись которых
+в системе счисления с основанием 7 оканчивается цифрой 1. Если среди входных данных таких элементов нет, программа должна вывести «NO».
+Программа получает на вход в первой строке натуральное число – количество чисел N (3 ≤ N ≤ 10 000), затем N натуральных чисел,
+не превышающих 30 000, каждое в отдельной строке.
+Программа должна вывести одно число – количество десятичных чисел (элементов последовательности), запись которых в 7-ричной системе счисления оканчивается цифрой 1, или «NO», если среди входных данных таких элементов нет.
+<i>Пример работы программы</i>
+<img src="для 1 (16).jpg" alt="Задание 1" style="width: 50%; height: auto; margin: 1rem 0;">
         </div>
         <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 1</a>
         <button class="solution-btn" data-target="sol1">🎬 Показать решение</button>
@@ -213,12 +293,43 @@
                 </video>
             </div>
         </div>
+
+        <!-- Блок для кода -->
+        <div class="code-editor">
+            <div class="code-header">
+                <span>🐍 Python код</span>
+                <button class="run-code-btn" onclick="runCode('code1', 'output1', 'test1')">▶ Выполнить код</button>
+            </div>
+            <textarea id="code1" placeholder="Введите ваш код на Python..."># Ваше решение
+n = int(input())
+max5 = 0
+for i in range(n):
+    x = int(input())
+    if x % 5 == 0 and x > max5:
+        max5 = x
+print(max5)</textarea>
+            <div class="test-data">
+                <div class="test-data-title">📊 Тестовые данные (введите свои или используйте готовые):</div>
+                <textarea id="test1" rows="3">3
+15
+10
+5</textarea>
+            </div>
+            <div class="output-area" id="output1">▶ Результат выполнения появится здесь...</div>
+        </div>
     </div>
+
     <!-- ЗАДАНИЕ 2 -->
     <div class="task">
         <div class="task-number">Задание 2</div>
-        <div class="task-text">В одном из произведений <b>Н.В. Гоголя</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, есть герой с фамилией Ковалев. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните чин государственной службы этого героя.
-            
+        <div class="task-text">
+Напишите программу, которая в последовательности натуральных десятичных чисел определяет наибольший элемент, запись которого
+в системе счисления с основанием 7 оканчивается нечётной цифрой. Если среди входных данных таких элементов нет, программа должна вывести «NO».
+Программа получает на вход в первой строке натуральное число – количество чисел N (3 ≤ N ≤ 10 000), затем N натуральных чисел,
+не превышающих 30 000, каждое в отдельной строке.
+Программа должна вывести одно десятичное число – наибольший элемент последовательности, запись которого в 7-ричной системе счисления оканчивается нечётной цифрой, или «NO», если среди входных данных таких элементов нет.
+<i>Пример работы программы</i>
+<img src="для 2 (16).jpg" alt="Задание 1" style="width: 50%; height: auto; margin: 1rem 0;">            
         </div>
         <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 2</a>
         <button class="solution-btn" data-target="sol2">🎬 Показать решение</button>
@@ -229,228 +340,30 @@
                 </video>
             </div>
         </div>
-    </div>
-    <!-- ЗАДАНИЕ 3 -->
-    <div class="task">
-        <div class="task-number">Задание 3</div>
-        <div class="task-text">В одном из произведений <b>А.П. Чехова</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, есть героиня по прозвищу Печончиха. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните имя этой женщины.
-            
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 3</a>
-        <button class="solution-btn" data-target="sol3">🎬 Показать решение</button>
-        <div id="sol3" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="3.mp4" type="video/mp4">
-                </video>
+
+        <!-- Блок для кода -->
+        <div class="code-editor">
+            <div class="code-header">
+                <span>🐍 Python код</span>
+                <button class="run-code-btn" onclick="runCode('code2', 'output2', 'test2')">▶ Выполнить код</button>
             </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 4 -->
-    <div class="task">
-        <div class="task-number">Задание 4</div>
-        <div class="task-text">В одном из произведений <b>Ф.М. Достоевского</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, есть герой с фамилией Мармеладов. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните имя дочери Мармеладова.
-            
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 4</a>
-        <button class="solution-btn" data-target="sol4">🎬 Показать решение</button>
-        <div id="sol4" class="solution">
-            <div class="video-wrapper">
-                    <iframe src="https://vkvideo.ru/video_ext.php?oid=-236134792&id=456239031&hash=11b34e6b7d5b5291&hd=3" width="1280" height="720" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
+            <textarea id="code2" placeholder="Введите ваш код на Python..."># Ваше решение
+n = int(input())
+max5 = 0
+for i in range(n):
+    x = int(input())
+    if x % 5 == 0 and x > max5:
+        max5 = x
+print(max5)</textarea>
+            <div class="test-data">
+                <div class="test-data-title">📊 Тестовые данные (введите свои или используйте готовые):</div>
+                <textarea id="test2" rows="3">4
+100
+20
+35
+40</textarea>
             </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 5 -->
-    <div class="task">
-        <div class="task-number">Задание 5</div>
-        <div class="task-text">В одном из произведений <b>А.С. Пушкина</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, упоминается некий граф Пронский. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните фамилию персонажа произведения, близкого родственника графа Пронского.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 5</a>
-        <button class="solution-btn" data-target="sol5">🎬 Показать решение</button>
-        <div id="sol5" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="5.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 6 -->
-    <div class="task">
-        <div class="task-number">Задание 6</div>
-        <div class="task-text">В одном из произведений <b>Н.В. Гоголя</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, у одного из персонажей есть служанка по имени Мавра, которую он называет «разбойницей». С помощью поисковых средств операционной системы и текстового редактора или браузера выясните фамилию этого персонажа.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 6</a>
-        <button class="solution-btn" data-target="sol6">🎬 Показать решение</button>
-        <div id="sol6" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="6.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 7 -->
-    <div class="task">
-        <div class="task-number">Задание 7</div>
-        <div class="task-text">В одном из произведений <b>А.П. Чехова</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, присутствует эпизод, в котором девица Подзатылкина в доме своих почтенных родителей была объявлена невестой. С помощью поисковых средств операционной системы и текстового редактора выясните фамилию жениха.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 7</a>
-        <button class="solution-btn" data-target="sol7">🎬 Показать решение</button>
-        <div id="sol7" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="7.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 8 -->
-    <div class="task">
-        <div class="task-number">Задание 8</div>
-        <div class="task-text">В одном из произведений <b>А.П. Чехова</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, есть герой по фамилии Родэ. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните чин (звание) Родэ.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 8</a>
-        <button class="solution-btn" data-target="sol8">🎬 Показать решение</button>
-        <div id="sol8" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="8.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 9 -->
-    <div class="task">
-        <div class="task-number">Задание 9</div>
-        <div class="task-text">В одном из произведений <b>Н.В. Гоголя</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, главный герой играет с одним из персонажей в шашки. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните фамилию соперника главного героя по шашечной партии.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 9</a>
-        <button class="solution-btn" data-target="sol9">🎬 Показать решение</button>
-        <div id="sol9" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="9.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 10 -->
-    <div class="task">
-        <div class="task-number">Задание 10</div>
-        <div class="task-text">В одном из произведений <b>А.С. Пушкина</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, упоминается некая Курочкина. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните её имя.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 10</a>
-        <button class="solution-btn" data-target="sol10">🎬 Показать решение</button>
-        <div id="sol10" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="10.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 11 -->
-    <div class="task">
-        <div class="task-number">Задание 11</div>
-        <div class="task-text">В одном из произведений <b>А.С. Пушкина</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, рассказывается о том, что для героини заказали «пару лаптей». С помощью поисковых средств операционной системы и текстового редактора выясните имя мастера, у которого заказали лапти для героини.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 11</a>
-        <button class="solution-btn" data-target="sol11">🎬 Показать решение</button>
-        <div id="sol11" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="11.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 12 -->
-    <div class="task">
-        <div class="task-number">Задание 12</div>
-        <div class="task-text">В одном из произведений <b>А.С. Пушкина</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, есть персонаж попадья Федотовна. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните название этого произведения
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 12</a>
-        <button class="solution-btn" data-target="sol12">🎬 Показать решение</button>
-        <div id="sol12" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="12.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 13 -->
-    <div class="task">
-        <div class="task-number">Задание 13</div>
-        <div class="task-text">В одном из произведений <b>Н.В. Гоголя</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, в одном из эпизодов рассказывается о членах одной семьи, которые предпочитали носить исключительно сапоги, меняя подметки три раза в год. С помощью поисковых средств операционной системы и текстового редактора определите фамилию главы этой семьи.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 13</a>
-        <button class="solution-btn" data-target="sol13">🎬 Показать решение</button>
-        <div id="sol13" class="solution">
-            <div class="video-wrapper">
-                    <iframe src="https://vkvideo.ru/video_ext.php?oid=-236134792&id=456239032&hash=0184499854c4f7fa&hd=3" width="1280" height="720" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 14 -->
-    <div class="task">
-        <div class="task-number">Задание 14</div>
-        <div class="task-text">В одном из произведений <b>А.П. Чехова</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, есть герой с фамилией Елдырин. С помощью поисковых средств операционной системы и текстового редактора или браузера выясните должность этого героя.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 14</a>
-        <button class="solution-btn" data-target="sol14">🎬 Показать решение</button>
-        <div id="sol14" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="14.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 15 -->
-    <div class="task">
-        <div class="task-number">Задание 15</div>
-        <div class="task-text">В одном из произведений <b>М.Ю. Лермонтова</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, упоминается о Койшаурской долине. С помощью поисковых средств операционной системы и текстового редактора определите город, из которого был родом русский извозчик, первым спустившийся на повозке по дороге между пропастью и утёсом.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 15</a>
-        <button class="solution-btn" data-target="sol15">🎬 Показать решение</button>
-        <div id="sol15" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="15.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 16 -->
-    <div class="task">
-        <div class="task-number">Задание 16</div>
-        <div class="task-text">В одном из произведений <b>А.С. Пушкина</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, служанка вместо слова «доктор» использует слово «дохтур». С помощью поисковых средств операционной системы и текстового редактора или браузера выясните имя её собеседницы.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 16</a>
-        <button class="solution-btn" data-target="sol16">🎬 Показать решение</button>
-        <div id="sol16" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="16.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-    <!-- ЗАДАНИЕ 17 -->
-    <div class="task">
-        <div class="task-number">Задание 17</div>
-        <div class="task-text">В одном из произведений <b>А.П. Чехова</b>, текст которого приведён в подкаталоге каталога <b>Проза</b>, присутствует эпизод, в котором один из героев послал в «Ниву» статью «Интересный случай многоплодия среди крестьянского народонаселения». С помощью поисковых средств операционной системы и текстового редактора выясните фамилию этого героя.
-        </div>
-        <a href="https://disk.yandex.ru/d/RVZisaYGQu91JA" class="download-link" download>📎 Скачать файлы для задания 17</a>
-        <button class="solution-btn" data-target="sol17">🎬 Показать решение</button>
-        <div id="sol17" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="17.mp4" type="video/mp4">
-                </video>
-            </div>
+            <div class="output-area" id="output2">▶ Результат выполнения появится здесь...</div>
         </div>
     </div>
 <footer>
@@ -458,6 +371,103 @@
 </footer>
 
 <script>
+    let pyodide = null;
+    let pyodideLoading = false;
+    let pyodideQueue = [];
+
+    // Инициализация Pyodide
+    async function initPyodide() {
+        if (pyodide !== null) return;
+        if (pyodideLoading) {
+            // Ждём загрузки
+            return new Promise((resolve) => {
+                pyodideQueue.push(resolve);
+            });
+        }
+        pyodideLoading = true;
+        const outputDiv = document.getElementById('output1');
+        if (outputDiv) outputDiv.innerHTML = '⏳ Загрузка Python...';
+        
+        try {
+            pyodide = await loadPyodide({
+                indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.28.2/full/'
+            });
+            console.log('Pyodide загружен');
+            if (outputDiv) outputDiv.innerHTML = '✅ Python готов. Выполните код.';
+            
+            pyodideLoading = false;
+            pyodideQueue.forEach(resolve => resolve());
+            pyodideQueue = [];
+        } catch (error) {
+            console.error('Ошибка загрузки Pyodide:', error);
+            if (outputDiv) outputDiv.innerHTML = '❌ Ошибка загрузки Python: ' + error.message;
+            pyodideLoading = false;
+        }
+    }
+
+    // Выполнение кода
+    async function runCode(codeId, outputId, testId) {
+        const outputDiv = document.getElementById(outputId);
+        const code = document.getElementById(codeId).value;
+        const testData = document.getElementById(testId).value;
+        
+        if (!code.trim()) {
+            outputDiv.innerHTML = '❌ Введите код';
+            return;
+        }
+        
+        if (!pyodide) {
+            outputDiv.innerHTML = '⏳ Загрузка Python, подождите...';
+            await initPyodide();
+            if (!pyodide) {
+                outputDiv.innerHTML = '❌ Не удалось загрузить Python';
+                return;
+            }
+        }
+        
+        outputDiv.innerHTML = '⏳ Выполнение...';
+        
+        try {
+            // Создаём полный код с подстановкой входных данных
+            const fullCode = `
+import sys
+from io import StringIO
+
+# Подставляем входные данные
+input_data = """${testData.replace(/`/g, '\\`')}"""
+sys.stdin = StringIO(input_data)
+
+# Перехватываем вывод
+old_stdout = sys.stdout
+sys.stdout = StringIO()
+
+try:
+    # Выполняем код пользователя
+${code.split('\n').map(line => '    ' + line).join('\n')}
+except Exception as e:
+    print(f"Ошибка: {e}")
+
+# Получаем вывод
+output = sys.stdout.getvalue()
+sys.stdout = old_stdout
+print(output)
+            `;
+            
+            const result = await pyodide.runPythonAsync(fullCode);
+            const output = result || pyodide.runPython('output');
+            
+            outputDiv.innerHTML = '📤 <strong>Результат:</strong><br>' + (output || 'Нет вывода').replace(/\n/g, '<br>');
+        } catch (error) {
+            outputDiv.innerHTML = '❌ Ошибка: ' + error.message;
+        }
+    }
+
+    // Загружаем Pyodide при загрузке страницы
+    window.addEventListener('load', () => {
+        initPyodide();
+    });
+
+    // Обработка кнопок показа решения
     document.querySelectorAll('.solution-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const target = document.getElementById(this.dataset.target);
