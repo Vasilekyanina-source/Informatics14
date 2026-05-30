@@ -123,30 +123,25 @@
             border-radius: 0.75rem;
             background: #000;
         }
-        /*.video-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 0.75rem;
-            background: #000;
-        }
+        * Сам iframe или video */
+        .video-wrapper iframe,
         .video-wrapper video {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100% !important;
+            height: 100% !important;
             border: none;
         }
+        
+        /* Для видео из ВК с фиксированными размерами — переопределяем */
         .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-        }*/
+            width: 100% !important;
+            height: 100% !important;
+        }
         @media (max-width: 768px) {
             .video-wrapper {
                 border-radius: 0.5rem;
