@@ -114,34 +114,6 @@
             max-height: 500px;
             transition: max-height 0.5s ease-in;
         }
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 пропорция (16/9 = 1.777) */
-            height: 0;
-            overflow: hidden;
-            border-radius: 0.75rem;
-            background: #000;
-        }
-        * Сам iframe или video */
-        .video-wrapper iframe,
-        .video-wrapper video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100% !important;
-            height: 100% !important;
-            border: none;
-        }
-        
-        /* Для видео из ВК с фиксированными размерами — переопределяем */
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100% !important;
-            height: 100% !important;
-        }
         @media (max-width: 768px) {
             .video-wrapper {
                 border-radius: 0.5rem;
@@ -337,13 +309,13 @@ print(max5)</textarea>
         </div>
         <button class="solution-btn" data-target="sol2">🎬 Показать решение</button>
         <div id="sol2" class="solution">
-            <div class="video-wrapper">
-                <video controls>
-                    <source src="Разбор 16 №2.mp4" type="video/mp4">
-                </video>
-            </div>
+        <div class="video-wrapper">
+            <video controls width="853" height="480">
+                <source src="Разбор 16 №2.mp4" type="video/mp4">
+            </video>
         </div>
         </div>
+    </div>
 
         <!-- Блок для кода -->
         <div class="code-editor">
