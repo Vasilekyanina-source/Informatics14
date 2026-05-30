@@ -114,7 +114,7 @@
             max-height: 500px;
             transition: max-height 0.5s ease-in;
         }
-        .video-wrapper {
+        /*.video-wrapper {
             position: relative;
             width: 100%;
             padding-bottom: 56.25%;
@@ -137,7 +137,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-        }
+        }*/
         @media (max-width: 768px) {
             .video-wrapper {
                 border-radius: 0.5rem;
@@ -485,7 +485,44 @@ print(max5)</textarea>
             </div>
             <div class="output-area" id="output5">▶ Результат выполнения появится здесь...</div>
         </div>
-    </div> 
+    </div>
+
+    <!-- ЗАДАНИЕ 6 -->
+    <div class="task">
+        <div class="task-number">Задание 4</div>
+        <div class="task-text">
+Напишите программу, которая в последовательности натуральных чисел находит среднее арифметическое двузначных чисел или сообщает, что таких чисел нет (выводит «NO»). Программа получает на вход натуральные числа, количество введённых чисел неизвестно, последовательность чисел заканчивается числом 0 (0 – признак окончания ввода, не входит в последовательность). Количество чисел не превышает 100. Введенные числа не превышают 300. Программа должна вывести среднее арифметическое двузначных чисел или вывести «NO», если таких чисел нет. Значение выводить с точностью до десятых.
+<i>Пример работы программы</i>
+<img src="для 6 (16).jpg" alt="Задание 6" style="width: 50%; height: auto; margin: 1rem 0;">
+        </div>
+        <button class="solution-btn" data-target="sol6">🎬 Показать решение</button>
+        <div id="sol6" class="solution">
+            <div class="video-wrapper">
+                <video controls>
+                    <source src="6.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <!-- Блок для кода -->
+        <div class="code-editor">
+            <div class="code-header">
+                <span>🐍 Python код</span>
+                <button class="run-code-btn" onclick="runCode('code6', 'output6', 'test6')">▶ Выполнить код</button>
+            </div>
+            <textarea id="code6" placeholder="Введите ваш код на Python..."># Ваше решение
+</textarea>
+            <div class="test-data">
+                <div class="test-data-title">📊 Тестовые данные (введите свои или используйте готовые):</div>
+                <textarea id="test6" rows="3">10
+120
+49                   
+0</textarea>
+            </div>
+            <div class="output-area" id="output6">▶ Результат выполнения появится здесь...</div>
+        </div>
+    </div>
+
 <footer>
     <p>КодОГЭ — подготовка к экзамену</p>
 </footer>
